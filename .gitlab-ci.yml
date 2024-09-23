@@ -4,6 +4,11 @@ variables:
   KUBE_NAMESPACE_staging: staging
   KUBE_NAMESPACE_prod: prod
 
+
+image:
+  name: "python:3.11-alpine"
+  entrypoint: ["/bin/sh", "-c"]
+  
 build-job:
   stage: build
   script:
