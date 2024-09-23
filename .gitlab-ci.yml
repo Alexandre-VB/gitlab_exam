@@ -1,21 +1,20 @@
 variables:
-  # The domain used for the live deploy_prodment
   KUBE_NAMESPACE_dev: dev
   KUBE_NAMESPACE_staging: staging
   KUBE_NAMESPACE_prod: prod
 
-
 image:
   name: "python:3.11-alpine"
   entrypoint: ["/bin/sh", "-c"]
-  
+
+services:
+  - docker:dind
+
 build-job:
   stage: build
   script:
+    - apk add --no-cache docker-cli
     - echo "Hello, $GITLAB_USER_LOGIN! $CI_REGISTRY_IMAGE"
     - docker build -t "$CI_REGISTRY_IMAGE/$S_GATEWAY:latest" ./gateway/
     - docker build -t "$CI_REGISTRY_IMAGE/$S_ORDERS:latest" ./orders/
     - docker build -t "$CI_REGISTRY_IMAGE/$S_USERS:latest" ./users/
-
-
-
