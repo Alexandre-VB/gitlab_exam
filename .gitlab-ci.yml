@@ -16,7 +16,10 @@ build-job:
   stage: build
   script:
     - echo "Hello, $GITLAB_USER_LOGIN! $DOCKER_REGISTRY/$DOCKERHUB_USERNAME/gitlab-exam"
-    # Utilise DockerHub pour le tag de l'image
     - docker build -t "$DOCKERHUB_USERNAME/gitlab-exam-gateway:latest" ./gateway/
     - docker build -t "$DOCKERHUB_USERNAME/gitlab-exam-orders:latest" ./orders/
     - docker build -t "$DOCKERHUB_USERNAME/gitlab-exam-users:latest" ./users/
+
+    - docker push "$DOCKERHUB_USERNAME/gitlab-exam-gateway:latest"
+    - docker push "$DOCKERHUB_USERNAME/gitlab-exam-orders:latest"
+    - docker push "$DOCKERHUB_USERNAME/gitlab-exam-users:latest"
