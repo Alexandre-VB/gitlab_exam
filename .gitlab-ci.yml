@@ -14,7 +14,7 @@ build-job:
   stage: build
   script:
     - apk add --no-cache docker-cli
-    - echo "Hello, $GITLAB_USER_LOGIN! $CI_REGISTRY_IMAGE"
+    - echo "Hello, $GITLAB_USER_LOGIN! $DOCKER_REGISTRY/$DOCKERHUB_USERNAME/gitlab-exam"
     - docker build -t "$CI_REGISTRY_IMAGE/$S_GATEWAY:latest" ./gateway/
     - docker build -t "$CI_REGISTRY_IMAGE/$S_ORDERS:latest" ./orders/
     - docker build -t "$CI_REGISTRY_IMAGE/$S_USERS:latest" ./users/
