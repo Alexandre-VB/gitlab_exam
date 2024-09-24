@@ -4,6 +4,7 @@ variables:
 
   # Variables Kube namespaces
   KUBE_NAMESPACE_dev: dev
+  KUBE_NAMESPACE_qa: qa
   KUBE_NAMESPACE_staging: staging
   KUBE_NAMESPACE_prod: prod
 
