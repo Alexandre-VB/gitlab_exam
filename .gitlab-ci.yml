@@ -2,17 +2,13 @@ variables:
   DOCKER_REGISTRY: docker.io
   DOCKERHUB_USERNAME: "alexandrevb" 
 
-image:
-  name: "python:3.11-alpine"
-  entrypoint: ["/bin/sh", "-c"]
+default:
+  image: docker:24.0.5
+  services:
+    - docker:24.0.5-dind
 
 before_script:
-  - apk update && apk add --no-cache docker curl bash
-  - dockerd & 
-  - sleep 5
-  - curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
   - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-
 
 stages:
   - build
