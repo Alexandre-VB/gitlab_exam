@@ -2,9 +2,12 @@ variables:
   DOCKER_REGISTRY: docker.io
   DOCKERHUB_USERNAME: "alexandrevb" 
 
+image: docker:20.10
 
 before_script:
-  - apt-get update && apt-get install -y docker.io  
+  - apt-get update -y
+  - apt-get install -y sudo
+  - curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
   - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
 
 stages:
