@@ -4,6 +4,7 @@ variables:
 
 
 before_script:
+  - apt-get update && apt-get install -y docker.io  
   - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
 
 stages:
