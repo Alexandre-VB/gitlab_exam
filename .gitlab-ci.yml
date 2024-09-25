@@ -29,22 +29,22 @@ build-job:
 deploy_dev:
   stage: deploy_dev
   script:
-    - helm upgrade --install app /home/ubuntu/gitlab-exam/helm/ --values /home/ubuntu/gitlab-exam/values.yaml --namespace dev
+    - helm upgrade --install app /home/ubuntu/gitlab-exam/helm/ --values /home/ubuntu/gitlab-exam/helm/values.yaml --namespace dev
 
 deploy_QA:
   stage: deploy_QA
   script:
-    - helm upgrade --install app /home/ubuntu/gitlab-exam/helm/ --values /home/ubuntu/gitlab-exam/values.yaml --namespace qa
+    - helm upgrade --install app /home/ubuntu/gitlab-exam/helm/ --values /home/ubuntu/gitlab-exam/helm/values.yaml --namespace qa
 
 deploy_staging:
   stage: deploy_staging
   script:
-    - helm upgrade --install app /home/ubuntu/gitlab-exam/helm/ --values /home/ubuntu/gitlab-exam/values.yaml --namespace staging
+    - helm upgrade --install app /home/ubuntu/gitlab-exam/helm/ --values /home/ubuntu/gitlab-exam/helm/values.yaml --namespace staging
 
 deploy_prod:
   stage: deploy_prod
   script:
-    - helm upgrade --install app /home/ubuntu/gitlab-exam/helm/ --values /home/ubuntu/gitlab-exam/values.yaml --namespace prod
+    - helm upgrade --install app /home/ubuntu/gitlab-exam/helm/ --values /home/ubuntu/gitlab-exam/helm/values.yaml --namespace prod
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
       when: manual
