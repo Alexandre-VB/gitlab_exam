@@ -2,16 +2,7 @@ variables:
   DOCKER_REGISTRY: docker.io
   DOCKERHUB_USERNAME: "alexandrevb" 
 
-default:
-  image: python:3.11
-  services:
-    - docker:24.0.5-dind
-
 before_script:
-  - apt-get update && apt-get install -y sudo curl
-  - curl -fsSL https://get.docker.com -o get-docker.sh
-  - sh get-docker.sh
-  - curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
   - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
 
 stages:
