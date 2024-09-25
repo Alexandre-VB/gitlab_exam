@@ -5,9 +5,6 @@ variables:
 image: docker:20.10
 
 before_script:
-  - apt-get update -y
-  - apt-get install -y sudo
-  - curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
   - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
 
 stages:
@@ -36,7 +33,7 @@ deploy_dev:
     - rm -Rf .kube
     - mkdir .kube
     - cat $KUBE_CONFIG > .kube/config
-    - sudo helm upgrade --install app helm/ --values=values.yml --namespace dev
+    - helm upgrade --install app helm/ --values=values.yml --namespace dev
 
 deploy_QA:
   stage: deploy_QA
@@ -44,7 +41,7 @@ deploy_QA:
     - rm -Rf .kube
     - mkdir .kube
     - cat $KUBE_CONFIG > .kube/config
-    - sudo helm upgrade --install app helm/ --values=values.yml --namespace qa
+    - helm upgrade --install app helm/ --values=values.yml --namespace qa
 
 deploy_staging:
   stage: deploy_staging
@@ -52,7 +49,7 @@ deploy_staging:
     - rm -Rf .kube
     - mkdir .kube
     - cat $KUBE_CONFIG > .kube/config
-    - sudo helm upgrade --install app helm/ --values=values.yml --namespace staging
+    - helm upgrade --install app helm/ --values=values.yml --namespace staging
       
 deploy_prod:
   stage: deploy_prod
@@ -60,7 +57,7 @@ deploy_prod:
     - rm -Rf .kube
     - mkdir .kube
     - cat $KUBE_CONFIG > .kube/config
-    - sudo helm upgrade --install app helm/ --values=values.yml --namespace prod
+    - helm upgrade --install app helm/ --values=values.yml --namespace prod
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       when: manual
