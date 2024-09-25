@@ -2,12 +2,6 @@ variables:
   DOCKER_REGISTRY: docker.io
   DOCKERHUB_USERNAME: "alexandrevb" 
 
-  # Variables Kube namespaces
-  KUBE_NAMESPACE_dev: dev
-  KUBE_NAMESPACE_qa: qa
-  KUBE_NAMESPACE_staging: staging
-  KUBE_NAMESPACE_prod: prod
-
 image: docker:20.10
 
 services:
@@ -27,3 +21,39 @@ build-job:
     - docker push "$DOCKERHUB_USERNAME/gitlab-exam-gateway:latest"
     - docker push "$DOCKERHUB_USERNAME/gitlab-exam-orders:latest"
     - docker push "$DOCKERHUB_USERNAME/gitlab-exam-users:latest"
+
+
+deploy_dev:
+  stage: deploy_dev
+  script:
+    - rm -Rf .kube
+    - mkdir .kube
+    - cat $KUBE_CONFIG > .kube/config
+    - sudo helm upgrade --install app helm/ --values=values.yml --namespace dev
+
+deploy_QA:
+  stage: deploy_QA
+  script:
+    - rm -Rf .kube
+    - mkdir .kube
+    - cat $KUBE_CONFIG > .kube/config
+    - sudo helm upgrade --install app helm/ --values=values.yml --namespace qa
+
+deploy_staging:
+  stage: deploy_staging
+  script:
+    - rm -Rf .kube
+    - mkdir .kube
+    - cat $KUBE_CONFIG > .kube/config
+    - sudo helm upgrade --install app helm/ --values=values.yml --namespace staging
+      
+deploy_prod:
+  stage: deploy_prod
+  script:
+    - rm -Rf .kube
+    - mkdir .kube
+    - cat $KUBE_CONFIG > .kube/config
+    - sudo helm upgrade --install app helm/ --values=values.yml --namespace prod
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      when: manual
