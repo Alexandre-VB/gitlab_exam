@@ -4,10 +4,7 @@ variables:
 
 
 default:
-  image: alpine/helm:latest
-  services:
-    - docker:24.0.5-dind
-
+  image: themasterr/docker-helm-kubectl:latest
 
 before_script:
   - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
