@@ -7,7 +7,12 @@ image:
   entrypoint: ["/bin/sh", "-c"]
 
 before_script:
+  - apk update && apk add --no-cache docker curl bash
+  - dockerd & 
+  - sleep 5
+  - curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
   - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+
 
 stages:
   - build
