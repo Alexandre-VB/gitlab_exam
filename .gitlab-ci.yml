@@ -32,8 +32,8 @@ build-job:
 
 deploy_dev:
   stage: deploy_dev
-  script:
     <<: *default_deploy
+  script:
     - helm upgrade --install app /home/ubuntu/gitlab-exam/helm/ --values /home/ubuntu/gitlab-exam/values.yaml --namespace dev
 
 deploy_QA:
