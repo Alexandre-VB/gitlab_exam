@@ -23,7 +23,7 @@ build-job:
     - docker push "$DOCKERHUB_USERNAME/gitlab-exam-orders:latest"
     - docker push "$DOCKERHUB_USERNAME/gitlab-exam-users:latest"
 
-.default_deploy: &default_deploy
+default_deploy:
   script:
     - rm -Rf .kube
     - mkdir .kube
@@ -31,27 +31,27 @@ build-job:
 
 deploy_dev:
   stage: deploy_dev
+  extends: .default_deploy
   script:
-    <<: *default_deploy
     - helm upgrade --install app /home/ubuntu/gitlab-exam/helm/ --values /home/ubuntu/gitlab-exam/values.yaml --namespace dev
 
 deploy_QA:
   stage: deploy_QA
+  extends: .default_deploy
   script:
-    <<: *default_deploy
     - helm upgrade --install app /home/ubuntu/gitlab-exam/helm/ --values /home/ubuntu/gitlab-exam/values.yaml --namespace qa
 
 deploy_staging:
   stage: deploy_staging
+  extends: .default_deploy
   script:
-    <<: *default_deploy
     - helm upgrade --install app /home/ubuntu/gitlab-exam/helm/ --values /home/ubuntu/gitlab-exam/values.yaml --namespace staging
 
 deploy_prod:
   stage: deploy_prod
+  extends: .default_deploy
   script:
-    <<: *default_deploy
     - helm upgrade --install app /home/ubuntu/gitlab-exam/helm/ --values /home/ubuntu/gitlab-exam/values.yaml --namespace prod
   rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: $CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "push"
       when: manual
