@@ -23,7 +23,8 @@ build-job:
     - docker push "$DOCKERHUB_USERNAME/gitlab-exam-orders:latest"
     - docker push "$DOCKERHUB_USERNAME/gitlab-exam-users:latest"
 
-default_deploy:
+
+.default_deploy: &default_deploy
   script:
     - rm -Rf .kube
     - mkdir .kube
@@ -31,27 +32,31 @@ default_deploy:
 
 deploy_dev:
   stage: deploy_dev
-  extends: .default_deploy
+  extends: .default_deploy  # Use "extends" to inherit from the anchor defined above
   script:
+    - *default_deploy   # Use the anchor to include the default deployment steps
     - helm upgrade --install app /home/ubuntu/gitlab-exam/helm/ --values /home/ubuntu/gitlab-exam/values.yaml --namespace dev
 
 deploy_QA:
   stage: deploy_QA
   extends: .default_deploy
   script:
+    - *default_deploy
     - helm upgrade --install app /home/ubuntu/gitlab-exam/helm/ --values /home/ubuntu/gitlab-exam/values.yaml --namespace qa
 
 deploy_staging:
   stage: deploy_staging
   extends: .default_deploy
   script:
+    - *default_deploy
     - helm upgrade --install app /home/ubuntu/gitlab-exam/helm/ --values /home/ubuntu/gitlab-exam/values.yaml --namespace staging
 
 deploy_prod:
   stage: deploy_prod
   extends: .default_deploy
   script:
+    - *default_deploy
     - helm upgrade --install app /home/ubuntu/gitlab-exam/helm/ --values /home/ubuntu/gitlab-exam/values.yaml --namespace prod
   rules:
-    - if: $CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "push"
+    - if: '$CI_COMMIT_BRANCH == "main" && $CI_PIPELINE_SOURCE == "push"'
       when: manual
