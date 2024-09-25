@@ -24,38 +24,35 @@ build-job:
     - docker push "$DOCKERHUB_USERNAME/gitlab-exam-orders:latest"
     - docker push "$DOCKERHUB_USERNAME/gitlab-exam-users:latest"
 
+.default_deploy: &default_deploy
+  script:
+    - rm -Rf .kube
+    - mkdir .kube
+    - cat $KUBE_CONFIG > .kube/config
 
 deploy_dev:
   stage: deploy_dev
   script:
-    - rm -Rf .kube
-    - mkdir .kube
-    - cat $KUBE_CONFIG > .kube/config
-    - helm upgrade --install app helm/ --values=values.yml --namespace dev
+    <<: *default_deploy
+    - helm upgrade --install app /home/ubuntu/gitlab-exam/helm/ --values=/home/ubuntu/gitlab-exam/values.yml --namespace dev
 
 deploy_QA:
   stage: deploy_QA
   script:
-    - rm -Rf .kube
-    - mkdir .kube
-    - cat $KUBE_CONFIG > .kube/config
-    - helm upgrade --install app helm/ --values=values.yml --namespace qa
-
+    <<: *default_deploy
+    - helm upgrade --install app /home/ubuntu/gitlab-exam/helm/ --values=/home/ubuntu/gitlab-exam/values.yml --namespace qa
+    
 deploy_staging:
   stage: deploy_staging
   script:
-    - rm -Rf .kube
-    - mkdir .kube
-    - cat $KUBE_CONFIG > .kube/config
-    - helm upgrade --install app helm/ --values=values.yml --namespace staging
-      
+    <<: *default_deploy
+    - helm upgrade --install app /home/ubuntu/gitlab-exam/helm/ --values=/home/ubuntu/gitlab-exam/values.yml --namespace staging
+
 deploy_prod:
   stage: deploy_prod
   script:
-    - rm -Rf .kube
-    - mkdir .kube
-    - cat $KUBE_CONFIG > .kube/config
-    - helm upgrade --install app helm/ --values=values.yml --namespace prod
+    <<: *default_deploy
+    - helm upgrade --install app /home/ubuntu/gitlab-exam/helm/ --values=/home/ubuntu/gitlab-exam/values.yml --namespace prod
   rules:
     - if: $CI_COMMIT_BRANCH == "main"
       when: manual

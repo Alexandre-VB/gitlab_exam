@@ -1,0 +1,8 @@
+[init]
+	defaultBranch = none
+[fetch]
+	recurseSubmodules = false
+[transfer]
+	bundleURI = true
+[http "https://gitlab.com"]
+	sslCAInfo = /home/ubuntu/gitlab-exam/builds/A38Kt4Snm/0/Alexandre-VB/gitlab-exam.tmp/CI_SERVER_TLS_CA_FILE
