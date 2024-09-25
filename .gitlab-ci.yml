@@ -1,6 +1,6 @@
 variables:
   DOCKER_REGISTRY: docker.io
-  DOCKERHUB_USERNAME: "alexandrevb" 
+  DOCKERHUB_USERNAME: "alexandrevb"
 
 before_script:
   - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
@@ -34,25 +34,26 @@ deploy_dev:
   stage: deploy_dev
   script:
     <<: *default_deploy
-    - helm upgrade --install app /home/ubuntu/gitlab-exam/helm/ --values=/home/ubuntu/gitlab-exam/values.yml --namespace dev
+    - helm upgrade --install app /home/ubuntu/gitlab-exam/helm/ --values /home/ubuntu/gitlab-exam/values.yaml --namespace dev
 
 deploy_QA:
   stage: deploy_QA
   script:
     <<: *default_deploy
-    - helm upgrade --install app /home/ubuntu/gitlab-exam/helm/ --values=/home/ubuntu/gitlab-exam/values.yml --namespace qa
-    
+    - helm upgrade --install app /home/ubuntu/gitlab-exam/helm/ --values /home/ubuntu/gitlab-exam/values.yaml --namespace qa
+
 deploy_staging:
   stage: deploy_staging
   script:
     <<: *default_deploy
-    - helm upgrade --install app /home/ubuntu/gitlab-exam/helm/ --values=/home/ubuntu/gitlab-exam/values.yml --namespace staging
+    - helm upgrade --install app /home/ubuntu/gitlab-exam/helm/ --values /home/ubuntu/gitlab-exam/values.yaml --namespace staging
 
 deploy_prod:
   stage: deploy_prod
   script:
     <<: *default_deploy
-    - helm upgrade --install app /home/ubuntu/gitlab-exam/helm/ --values=/home/ubuntu/gitlab-exam/values.yml --namespace prod
+    - helm upgrade --install app /home/ubuntu/gitlab-exam/helm/ --values /home/ubuntu/gitlab-exam/values.yaml --namespace prod
   rules:
-    - if: $CI_COMMIT_BRANCH == "main"
+    - if: '$CI_COMMIT_BRANCH == "main"'
       when: manual
+
