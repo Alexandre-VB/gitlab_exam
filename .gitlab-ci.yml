@@ -19,7 +19,6 @@ build-job:
     - docker build -t "$DOCKERHUB_USERNAME/gitlab-exam-gateway:latest" ./gateway/
     - docker build -t "$DOCKERHUB_USERNAME/gitlab-exam-orders:latest" ./orders/
     - docker build -t "$DOCKERHUB_USERNAME/gitlab-exam-users:latest" ./users/
-
     - docker push "$DOCKERHUB_USERNAME/gitlab-exam-gateway:latest"
     - docker push "$DOCKERHUB_USERNAME/gitlab-exam-orders:latest"
     - docker push "$DOCKERHUB_USERNAME/gitlab-exam-users:latest"
@@ -32,8 +31,8 @@ build-job:
 
 deploy_dev:
   stage: deploy_dev
-    <<: *default_deploy
   script:
+    <<: *default_deploy
     - helm upgrade --install app /home/ubuntu/gitlab-exam/helm/ --values /home/ubuntu/gitlab-exam/values.yaml --namespace dev
 
 deploy_QA:
@@ -56,4 +55,3 @@ deploy_prod:
   rules:
     - if: '$CI_COMMIT_BRANCH == "main"'
       when: manual
-
