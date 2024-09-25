@@ -2,7 +2,9 @@ variables:
   DOCKER_REGISTRY: docker.io
   DOCKERHUB_USERNAME: "alexandrevb" 
 
-image: docker:20.10
+image:
+  name: "python:3.11-alpine"
+  entrypoint: ["/bin/sh", "-c"]
 
 before_script:
   - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
